@@ -1,12 +1,12 @@
 from selenium import webdriver
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.by import By
-from selenium.common.exceptions import ElementNotInteractableException
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 import re
 import time
+import os
 from selenium.webdriver.firefox.options import Options
 
 REGEX_LINK = re.compile(r'(https?:\S+)')
@@ -51,14 +51,15 @@ Episode 25 - http://ceesty.com/wuXQXS
 '''
 
 mega_list = []
+adblocker_path = os.path.join(os.getcwd(), 'uBlock0.xpi')
 
 
 def get_link(url):
 
     options = Options()
     options.add_argument('--headless')
-    driver = webdriver.Firefox(firefox_options=options)
-    driver.install_addon('C:\\Users\\Aman Agarwal\\PycharmProjects\\selenium\\uBlock0.xpi', temporary=None)
+    driver = webdriver.Firefox(options=options)
+    driver.install_addon(adblocker_path, temporary=None)
     driver.set_page_load_timeout(60)
     try:
         print('Getting URL')
@@ -78,7 +79,7 @@ def get_link(url):
 def main():
     start = time.time()
     new_links = re.findall(REGEX_LINK, links)
-
+    print("Found {} episodes".format(len(new_links)))
     for item in new_links:
         link = get_link(item)
         while not link:
@@ -94,5 +95,5 @@ def main():
     print(time.time()-start)
 
 
-if __name__=='__main__':
+if __name__ == '__main__':
     main()
