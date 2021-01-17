@@ -64,7 +64,7 @@ def main():
         print(item)
         megafile.write('\n{}'.format(item))
         megafile.flush()
-    print(time.time()-start_time)
+    print("COMPLETE TIME: {}".format(time.time()-start_time))
 
 
 if __name__ == '__main__':
